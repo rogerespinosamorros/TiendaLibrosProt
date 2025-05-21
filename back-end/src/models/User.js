@@ -1,7 +1,7 @@
 const moongose = require('mongoose');
 const { Schema } = moongose;
 
-new Schema({
+const userSchema = new Schema({
     email:{
         type: String,
         required: true,
@@ -26,4 +26,7 @@ new Schema({
         enum: ['admin', 'user'],
         default: 'user',
     }
-})   
+}, {timestamps: true});
+
+const User = moongose.model('User', userSchema);
+module.exports = User;

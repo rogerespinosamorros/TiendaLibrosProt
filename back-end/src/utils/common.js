@@ -1,6 +1,8 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
+require('dotenv').config();
 
+//Create admin account
 const createAdminAcc = async () => {
     try{
         const email = process.env.ADMIN_EMAIL;

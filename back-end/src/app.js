@@ -1,6 +1,7 @@
 const express = require('express');
 require('dotenv').config();
 const mongoose = require('mongoose');
+const { createAdminAcc } = require('./utils/common');
 
 const app = express();
 
@@ -10,6 +11,7 @@ const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/tiendaLibro
 mongoose.connect(mongoURI, {})
     .then(() => {
         console.log('MongoDB connected');
+        createAdminAcc();
     })
     .catch(error => console.error(`MongoDB connection error: ${error}`));
     

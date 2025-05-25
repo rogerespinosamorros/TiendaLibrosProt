@@ -2,6 +2,7 @@ const express = require('express');
 require('dotenv').config();
 const mongoose = require('mongoose');
 const { createAdminAcc } = require('./utils/common');
+const authRoute = require('./routes/auth/authRoute');
 
 const app = express();
 
@@ -23,3 +24,4 @@ app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
 
+app.use('/api/auth', authRoute);

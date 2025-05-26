@@ -1,14 +1,17 @@
-import { Box, Container, Grid, CcsBaseline, Grid, Button, CircularProgress, TextField, Link } from '@mui/material';
+import { Box, Container, Grid, CcsBaseline, Grid, Button, CircularProgress, TextField, Link, Backdrop } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
+import { useSnackbar } from 'notistack';
+import { signup } from '../../services/auth';
 
 const defaultTheme = createTheme();
 
 export default function Signup() {
+  const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
@@ -30,9 +33,22 @@ export default function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log(formData)
-    setLoading(false);
-  }
+    try {
+      const response = await signup(formData);
+      if (response.status === 201) {
+        navigate('/login');
+        enqueueSnackbar('Signup successful! Please log in.', { variant: 'success', autoHideDuration: 3000 });
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 406) {
+        enqueueSnackbar('Email already exists', { variant: 'error', autoHideDuration: 3000 });
+      } else {
+        enqueueSnackbar('An error occurred during signup', { variant: 'error', autoHideDuration: 3000 });
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSignInClick = () => {
     navigate('/login');
@@ -131,6 +147,12 @@ export default function Signup() {
           </Box>
         </Container>
       </ThemeProvider>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color="succes" />
+      </Backdrop>
     </>
 
   )

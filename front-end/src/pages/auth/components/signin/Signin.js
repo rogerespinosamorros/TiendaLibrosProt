@@ -7,6 +7,7 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { useSnackbar } from 'notistack';
 import { signin } from '../../services/auth';
+import { isAdminLoggedIn, isUserLoggedIn, saveToken } from '../../../../utils/common';
 
 const defaultTheme = createTheme();
 
@@ -35,6 +36,12 @@ export default function Signin() {
       const response = await signin(formData);
       if (response.status === 200) {
         console.log(response);
+        const token = response.data.token;
+        saveToken(token);
+        if(isAdminLoggedIn())
+          navigate('/admin/dashboard');
+        else if(isUserLoggedIn())
+          navigate('/customer/dashboard')
        }
     } catch (error) {
         enqueueSnackbar('Invalid credentials!', { variant: 'error', autoHideDuration: 3000 });

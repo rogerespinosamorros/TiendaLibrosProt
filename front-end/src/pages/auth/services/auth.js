@@ -9,3 +9,13 @@ export const signup = async (signupDto) => {
         throw error; 
     }
 };
+
+export const sigin = async (loginDto) => {
+    try {
+        const response = await instance.post('api/auth/login', loginDto)
+        return response
+    } catch (error) {
+        console.error('Error during login:', error);
+        throw error; 
+    }
+}

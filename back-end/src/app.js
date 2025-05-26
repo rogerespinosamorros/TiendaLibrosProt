@@ -3,6 +3,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const { createAdminAcc } = require('./utils/common');
 const authRoute = require('./routes/auth/authRoute');
+const cors = require('cors');
 
 const app = express();
 
@@ -11,7 +12,16 @@ app.use(express.urlencoded({ extended: true }));
 
 const port = process.env.PORT || 3000;
 const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/tiendaLibrosProt';
+const corsorigin = process.env.CORS_ORIGIN;
 
+const corsOptions = {
+    origin: corsorigin,
+    optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
+
+// Connect to MongoDB
 mongoose.connect(mongoURI, {})
     .then(() => {
         console.log('MongoDB connected');

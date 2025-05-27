@@ -77,6 +77,8 @@ export default function Header() {
                 Tienda de Libros - Admin
               </Typography>
               <Button component={Link} to="/admin/dashboard" color="inherit">Dashboard</Button>
+              <Button component={Link} to="/admin/book/post" color="inherit">Post Book</Button>
+              <Button component={Link} to="/admin/orders" color="inherit">Orders</Button>
               <Button onClick={handleLogout} color="inherit">Logout</Button>
             </Toolbar>
           </AppBar>

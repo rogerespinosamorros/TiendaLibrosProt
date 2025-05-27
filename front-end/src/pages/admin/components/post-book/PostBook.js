@@ -15,6 +15,9 @@ import { Avatar,
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import BookIcon from '@mui/icons-material/Book';
+import { useNavigate } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
+import {postBook} from "../../../service/admin";
 
 
 const defaultTheme = createTheme()
@@ -74,6 +77,8 @@ export default function PostBook() {
         imageUrl: "",
     });
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const {enqueueSnackbar} = useSnackbar();   
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -88,9 +93,19 @@ export default function PostBook() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        console.log(book);
+        try {
+            const response = await postBook(book);
+            if (response.status === 201) {
+                navigate("/admin/dashboard");
+                enqueueSnackbar("Book posted successfully!", { variant: "success", autoHideDuration: 6000 });
+            }
+        } catch (error) {
+            enqueueSnackbar("Failed to post book. Please try again.", { variant: "error", autoHideDuration: 6000 });
+        } finally {
         setLoading(false);
     }
+    }
+    // Render the component
 
 
     return (

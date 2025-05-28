@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {
     Avatar,
@@ -16,15 +16,16 @@ import {
     TextField,
     Typography
 } from '@mui/material';
-import BookIcon from '@mui/icons-material/Book';
+import { getBookById } from '../../service/admin';
 import { useSnackbar } from 'notistack';
 import { Edit } from '@mui/icons-material';
+import { updateBook } from '../../service/admin';
 
 
 const defaultTheme = createTheme();
 
 export default function UpdateBook() {
-
+    const {id} = useParams();
     const [conditions] = useState(["New", "Near New", "Good", "Acceptable"]);
     const [genres] = useState([
         "Fiction",
@@ -84,6 +85,24 @@ export default function UpdateBook() {
     const navigate = useNavigate();
     const { enqueueSnackbar } = useSnackbar();  
 
+    const fetchBook = async () => {
+        setLoading(true);
+        try {
+            const response = await getBookById(id);
+            if (response.status === 200) {
+                setBook(response.data);
+            }
+        } catch (error) {
+            console.error(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchBook();
+    }, []);
+
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         const numericValue = (name === 'price') ? parseInt(value, 10) : value;
@@ -97,11 +116,11 @@ export default function UpdateBook() {
         e.preventDefault();
         setLoading(true);
         try {
-            // const response = await postBook(book);
-            // if (response.status === 201) {
-            //     navigate('/admin/dashboard');
-            //     enqueueSnackbar('Book updated successfully', { variant: 'success', autoHideDuration: 6000 });
-            // }
+             const response = await updateBook(id, book);
+             if (response.status === 200) {
+                 navigate('/admin/dashboard');
+                 enqueueSnackbar('Book updated successfully', { variant: 'success', autoHideDuration: 6000 });
+             }
         } catch (error) {
             enqueueSnackbar('Error updating book', { variant: 'error', autoHideDuration: 6000 });
         } finally {

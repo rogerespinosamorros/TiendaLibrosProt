@@ -26,3 +26,21 @@ export const getBooks = async () => {
         throw error;
     }
 }
+
+export const getBookById = async (id) => {
+    try {
+        const respone = await instance.get(`/api/admin/book/${id}`);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const updateBook = async (id, bookDto) => {
+    try {
+        const response = await instance.put(`/api/admin/book/${id}`, bookDto);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}

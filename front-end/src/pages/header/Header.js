@@ -77,6 +77,8 @@ export default function Header() {
                 Tienda de Libros - Admin
               </Typography>
               <Button component={Link} to="/admin/dashboard" color="inherit">Dashboard</Button>
+              <Button component={Link} to="/admin/book/post" color="inherit">Post Book</Button>
+              <Button component={Link} to="/admin/orders" color="inherit">Orders</Button>
               <Button onClick={handleLogout} color="inherit">Logout</Button>
             </Toolbar>
           </AppBar>
@@ -100,6 +102,8 @@ export default function Header() {
                 Tienda de Libros - Customer-User
               </Typography>
               <Button component={Link} to="/customer/dashboard" color="inherit">Dashboard</Button>
+              <Button component={Link} to="/customer/cart" color="inherit">Cart</Button>
+              <Button component={Link} to="/customer/orders" color="inherit">My Orders</Button>
               <Button onClick={handleLogout} color="inherit">Logout</Button>
             </Toolbar>
           </AppBar>

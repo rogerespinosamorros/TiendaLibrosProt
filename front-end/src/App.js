@@ -10,6 +10,8 @@ import CustomerDashboard from './pages/customer/components/dashboard/CustomerDas
 import PostBook from './pages/admin/components/post-book/PostBook';
 import UpdateBook from './pages/admin/components/update-book/UpdateBook';
 import ViewOrders from './pages/admin/components/view-orders/ViewOrders';
+import Cart from './pages/customer/components/cart/Cart';
+import MyOrders from './pages/customer/components/my-orders/MyOrders';
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
       
       {/* Cutomer Components */}
       <Route path='/customer/dashboard' element={<CustomerDashboard/>} />
+      <Route path='/customer/cart' element={<Cart/>} />
+      <Route path='/customer/orders' element={<MyOrders/>} />
     </Routes>
     </>
     

@@ -44,3 +44,12 @@ export const updateBook = async (id, bookDto) => {
         throw error;
     }
 }
+
+export const searchBook = async (genre) => {
+    try {
+        const response = await instance.get(`/api/admin/book/search/${genre}`);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}

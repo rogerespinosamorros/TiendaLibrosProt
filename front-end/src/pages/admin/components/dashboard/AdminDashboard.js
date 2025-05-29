@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { deleteBook, getBooks } from '../../service/admin';
+import { deleteBook, getBooks, searchBook } from '../../service/admin';
 import { useSnackbar } from 'notistack';
-import { useNavigate } from 'react-router-dom';
-import { Box, Grid, Button, Typography, Backdrop, CircularProgress, Paper } from '@mui/material';
+import { Form, useNavigate } from 'react-router-dom';
+import { Box, Grid, Button, Typography, Backdrop, CircularProgress, Paper, FormControl, InputLabel, Select, Menu } from '@mui/material';
 import { Edit as EditionIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 
@@ -29,6 +29,48 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function AdminDashboard() {
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [selectedGenre, setSelectedGenre] = useState('');
+    const [genres] = useState([
+        "Fiction",
+        "Non-Fiction",
+        "Mistery",
+        "Thriller",
+        "Science Fiction",
+        "Fantasy",
+        "Historical Fiction",
+        "Romance",
+        "Horror",
+        "Biography",
+        "Memoir",
+        "Self-Help",
+        "Health & Wellness",
+        "Travel",
+        "Science",
+        "Philosophy",
+        "Psychology",
+        "Poetry",
+        "Religion & Spirituality",
+        "Cooking",
+        "Art & Photography",
+        "Children's Literature",
+        "Young Adult",
+        "Graphic Novel",
+        "Drama",
+        "Business & Economics",
+        "Education",
+        "Politics",
+        "Law",
+        "Anthology",
+        "Adventure",
+        "Classics",
+        "Short Stories",
+        "Humor",
+        "Sports",
+        "Comics",
+        "Music",
+        "True Crime",
+        "Technology"
+    ]);
     const navigate = useNavigate();
     const { enqueueSnackbar } = useSnackbar();
 
@@ -49,6 +91,22 @@ export default function AdminDashboard() {
     useEffect(() => {
         fetchBooks();
     }, []);
+
+    const handleGenreChange = async (e) => {
+        setLoading(true);
+        const selectedGenre = e.target.value;
+        setSelectedGenre(selectedGenre);
+        try {
+            const response = await searchBook(selectedGenre);
+            if (response.status === 200) {
+                setBooks(response.data);
+            }
+        } catch (error) {
+            console.error(error.message);
+        } finally {
+            setLoading(false);
+        }
+    }
 
     const handleDeleteBook = async (id) => {
         setLoading(true);
@@ -73,6 +131,34 @@ export default function AdminDashboard() {
 
     return (
         <>
+            <Grid
+                sx={{
+                    marginTop: 3,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+            >
+                <FormControl sx={{ mt: 2, width: 400 }} margin="normal">
+                    <InputLabel id="genre-label">Select genre to search</InputLabel>
+                    <Select
+                        labelId="genre-label"
+                        id="genre-select"
+                        value={selectedGenre}
+                        label="Select genre to search"
+                        onChange={handleGenreChange}
+                    >
+                        <MenuItem value="">Select a genre</MenuItem>
+                        {genres.map((genre) => (
+                            <MenuItem key={genre} value={genre}>
+                                {genre}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+            </Grid>
+
             <Box sx={{ flexGrow: 1, p: 5 }}>
                 <Grid container spacing={2}>
                     {books.map((book) => (

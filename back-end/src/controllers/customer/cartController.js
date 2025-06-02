@@ -1,4 +1,4 @@
-const { addBookToCart } = require('../../services/customer/cartService');
+const { addBookToCart, fetchCartByUser } = require('../../services/customer/cartService');
 
 const postBookToCart = async (req, res) => {
     try {
@@ -11,6 +11,17 @@ const postBookToCart = async (req, res) => {
     }
 }
 
+const getCartByUser = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const response = await fetchCartByUser(userId);
+        res.status(response.statis).json(response.data);
+    } catch(error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 module.exports = {
-    postBookToCart
+    postBookToCart,
+    getCartByUser
 };

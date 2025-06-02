@@ -17,3 +17,12 @@ export const searchBook = async (genre) => {
         throw error;
     }
 }
+
+export const addBookToCart = async (bookId) => {
+    try {
+        const response = await instance.post(`/api/customer/cart/${bookId}`);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}

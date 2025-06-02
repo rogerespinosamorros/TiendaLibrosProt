@@ -5,6 +5,8 @@ import { Form, useNavigate } from 'react-router-dom';
 import { Box, Grid, Button, Typography, Backdrop, CircularProgress, Paper, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { Edit as EditionIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
+import { addBookToCart } from '../../service/customer';
 
 const Img = styled('img')({
     margin: 'auto',
@@ -111,13 +113,30 @@ export default function CustomerDashboard() {
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleAddBookToCart = async (bookId) => {
+        setLoading(true);
+        try {
+            const response = await addBookToCart(bookId);
+            if (response.status === 201) {
+                enqueueSnackbar("Book added to cart successfully!", { variant: "success", autoHideDuration: 6000 });
+            }
+        } catch (error) {
+            if (error.response && error.response.status === 409)
+                enqueueSnackbar("Book already exist in cart .", { variant: "error", autoHideDuration: 6000 });
+            else
+                enqueueSnackbar('Getting error while adding book to cart.', { variant: 'error', autoHideDuration: 6000 });
+        } finally {
+            setLoading(false);
+        }
     }
 
 
 
     return (
         <>
-        <Grid
+            <Grid
                 sx={{
                     marginTop: 3,
                     display: 'flex',
@@ -205,24 +224,17 @@ export default function CustomerDashboard() {
                                                 <strong>{book.status}</strong>
                                             </Typography>
                                         </Box>
-                                        {/*<Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
+                                        {book.status === "Available" && (
                                             <Button
-                                                variant='outlined'
-                                                color='primary'
-                                                endIcon={<EditIcon />}
-                                                onClick={() => handleUpdateBookClick(book.id)}
+                                                variant="outlined"
+                                                color="primary"
+                                                sx={{ mt: 2 }}
+                                                endIcon={<AddShoppingCartIcon />}
+                                                onClick={() => handleAddBookToCart(book._id)}
                                             >
-                                                Update
+                                                Add to Cart
                                             </Button>
-                                            <Button
-                                                variant='outlined'
-                                                color='error'
-                                                endIcon={<DeleteIcon />}
-                                                onClick={() => handleDeleteBook(id)}
-                                            >
-                                                Delete
-                                            </Button>
-                                        </Box> */}
+                                        )}
 
 
 
@@ -239,7 +251,7 @@ export default function CustomerDashboard() {
             >
                 <CircularProgress color="success" />
             </Backdrop>
-        
+
         </>
     );
 }

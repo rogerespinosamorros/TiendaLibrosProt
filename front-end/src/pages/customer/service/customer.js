@@ -26,3 +26,12 @@ export const addBookToCart = async (bookId) => {
         throw error;
     }
 }
+
+export const getCartByUser = async () => {
+    try {
+        const response = await instance.get(`/api/customer/cart`);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}

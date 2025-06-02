@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const User = require('../../models/User');
 const jwt = require('jsonwebtoken');
+const Order = require('../../models/Order');
 
 
 //Create user account
@@ -24,6 +25,13 @@ const createUser = async (userData) => {
             role: 'user',
             password: hashedPassword,
         });
+        const order = new Order({
+            amount: 0,
+            address: "Default Address",
+            orderStatus: 'Pending',
+            user: user
+        });
+        await order.save();
         await user.save();
         return user
     } catch (error) {

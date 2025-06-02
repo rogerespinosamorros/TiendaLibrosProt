@@ -2,7 +2,8 @@ const { addBookToCart } = require('../../services/customer/cartService');
 
 const postBookToCart = async (req, res) => {
     try {
-        const { userId, bookId } = req.body;
+        const userId = req.user.id;
+        const bookId = req.params.bookId;
         const response = await addBookToCart(userId, bookId);
         res.status(response.status).json({ message: response.data });
     } catch (error) {

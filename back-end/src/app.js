@@ -7,6 +7,7 @@ const cors = require('cors');
 const adminBookRoute = require('./routes/admin/bookRoute');
 const customerBookRoute = require('./routes/customer/bookRoute');
 const customerCartRoute = require('./routes/customer/cartRoute');
+const customerOrderRoute = require('./routes/customer/orderRoute')
 
 const app = express();
 
@@ -45,3 +46,4 @@ app.use('/api/admin/books', adminBookRoute);
 // Customer routes
 app.use('/api/customer/books', customerBookRoute);
 app.use('/api/customer/cart', customerCartRoute);
+app.use('/api/customer/order', customerOrderRoute);

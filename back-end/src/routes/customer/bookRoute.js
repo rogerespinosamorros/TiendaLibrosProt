@@ -8,11 +8,11 @@ const {
 
 
 
-router.get('/', authenticateJWT, authorizeRole('user'), getAllBooks);
+router.get('/', authenticateJWT, authorizeRole('customer'), getAllBooks);
 
-router.get('/:id', authenticateJWT, authorizeRole('user'), getBookById);
+router.get('/:id', authenticateJWT, authorizeRole('customer'), getBookById);
 
 
-router.get('/search/:genre', authenticateJWT, authorizeRole('user'), searchBook);
+router.get('/search/:genre', authenticateJWT, authorizeRole('customer'), searchBook);
 
 module.exports = router;

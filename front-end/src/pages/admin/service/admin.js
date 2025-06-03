@@ -53,3 +53,12 @@ export const searchBook = async (genre) => {
         throw error;
     }
 }
+
+export const getOrders = async () => {
+    try {
+        const response = await instance.get(`/api/admin/order`);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}

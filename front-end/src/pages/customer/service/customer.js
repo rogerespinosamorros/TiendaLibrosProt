@@ -35,3 +35,12 @@ export const getCartByUser = async () => {
         throw error;
     }
 }
+
+export const placeOrder = async (data) => {
+    try {
+        const response = await instance.post(`/api/customer/order`, data);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}

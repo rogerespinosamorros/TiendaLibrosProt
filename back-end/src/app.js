@@ -5,9 +5,11 @@ const { createAdminAcc } = require('./utils/common');
 const authRoute = require('./routes/auth/authRoute');
 const cors = require('cors');
 const adminBookRoute = require('./routes/admin/bookRoute');
+const adminOrderRoute = require('./routes/admin/orderRoute')
 const customerBookRoute = require('./routes/customer/bookRoute');
 const customerCartRoute = require('./routes/customer/cartRoute');
 const customerOrderRoute = require('./routes/customer/orderRoute')
+
 
 const app = express();
 
@@ -42,6 +44,7 @@ app.use('/api/auth', authRoute);
 
 // Admin routes
 app.use('/api/admin/books', adminBookRoute);
+app.use('/api/admin/order', adminOrderRoute);
 
 // Customer routes
 app.use('/api/customer/books', customerBookRoute);

@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const { authenticateJWT, authorizeRole } = require('../../middlewares/authMiddlewares');
-const { placeOrder } = require('../../controllers/customer/orderController');
+const { placeOrder, fetchOrdersByUser } = require('../../controllers/customer/orderController');
 
 router.post('/', authenticateJWT, authorizeRole('customer'), placeOrder);
+
+router.get('/', authenticateJWT, authorizeRole('customer'), fetchOrdersByUser)
 
 
 

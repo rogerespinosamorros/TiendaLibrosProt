@@ -44,3 +44,12 @@ export const placeOrder = async (data) => {
         throw error;
     }
 }
+
+export const getMyOrders = async () => {
+    try {
+        const response = await instance.get(`/api/customer/order`);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}

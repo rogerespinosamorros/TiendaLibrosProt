@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import {use, useEffect, useState} from 'react';
+import { useEffect, useState} from 'react';
 import { isAdminLoggedIn, isUserLoggedIn, removeToken } from '../../utils/common';
 
 

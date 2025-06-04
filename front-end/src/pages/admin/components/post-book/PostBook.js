@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Avatar,
     Button,
     CssBaseline,
@@ -17,7 +17,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import BookIcon from '@mui/icons-material/Book';
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
-import {postBook} from "../../../service/admin";
+import { postBook } from "../../service/admin";
 
 
 const defaultTheme = createTheme()
@@ -80,10 +80,9 @@ export default function PostBook() {
     const navigate = useNavigate();
     const {enqueueSnackbar} = useSnackbar();   
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        (name === "price") ? parseInt(value, 10) : value;
-        const numericValue = name === "price" ? parseFloat(value) : value;
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        const numericValue = name === "price" ? parseFloat(value, 10) : value;
         setBook({
             ...book,
             [name]: numericValue

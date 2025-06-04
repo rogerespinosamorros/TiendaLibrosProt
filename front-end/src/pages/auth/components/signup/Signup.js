@@ -1,4 +1,4 @@
-import { Box, Container, Grid, CcsBaseline, Grid, Button, CircularProgress, TextField, Link, Backdrop } from '@mui/material';
+import { Box, Container, Grid, CssBaseline, Button, CircularProgress, TextField, Link, Backdrop } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -58,7 +58,7 @@ export default function Signup() {
     <>
       <ThemeProvider theme={defaultTheme}>
         <Container component="main" maxWidth="xs">
-          <CcsBaseline />
+          <CssBaseline />
           <Box
             sx={{
               display: 'flex',

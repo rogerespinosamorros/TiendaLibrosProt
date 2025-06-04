@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {
@@ -25,7 +25,7 @@ import { updateBook } from '../../service/admin';
 const defaultTheme = createTheme();
 
 export default function UpdateBook() {
-    const {id} = useParams();
+     const { id } = useParams();
     const [conditions] = useState(["New", "Near New", "Good", "Acceptable"]);
     const [genres] = useState([
         "Fiction",
@@ -110,7 +110,7 @@ export default function UpdateBook() {
             ...book,
             [name]: numericValue
         })
-        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { getBooks, searchBook } from '../../service/admin';
+import { useEffect, useState } from 'react';
+import { getBooks, searchBook } from '../../service/customer';
 import { useSnackbar } from 'notistack';
-import { useNavigate } from 'react-router-dom';
+
 import { Box, Grid, Button, Typography, Backdrop, CircularProgress, Paper, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
@@ -77,7 +77,7 @@ export default function CustomerDashboard() {
         "True Crime",
         "Technology"
     ]);
-    const navigate = useNavigate();
+   
     const { enqueueSnackbar } = useSnackbar();
 
     const fetchBooks = async () => {
@@ -92,11 +92,14 @@ export default function CustomerDashboard() {
         } finally {
             setLoading(false);
         }
-    }
+    };
 
-    useEffect(() => {
-        fetchBooks();
-    }, []);
+   
+// eslint-disable-next-line
+useEffect(() => {
+    fetchBooks();
+}, []);
+
 
     const handleGenreChange = async (e) => {
         setLoading(true);

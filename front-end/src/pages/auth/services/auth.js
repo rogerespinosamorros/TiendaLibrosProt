@@ -1,4 +1,4 @@
-import instance from '../../../../environment/axiosInstance';
+import instance from '../../../environment/axiosInstance';
 
 export const signup = async (signupDto) => {
     try {
@@ -10,7 +10,7 @@ export const signup = async (signupDto) => {
     }
 };
 
-export const sigin = async (loginDto) => {
+export const signin = async (loginDto) => {
     try {
         const response = await instance.post('api/auth/login', loginDto)
         return response

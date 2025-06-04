@@ -55,7 +55,7 @@ const loginUser = async (userData) => {
             throw new Error('Incorrect password');
         };
         const token = jwt.sign({ id: ifExistsUser._id, role: ifExistsUser.role },
-            process.env.JWT_SECRET_KEY,
+            process.env.JWT_SECRET,
             { expiresIn: '1d' });
         return token;
 

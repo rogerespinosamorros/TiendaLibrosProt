@@ -39,5 +39,5 @@ const orderSchema = new Schema({
 
 }, { timestamps: true });
 
-const Order = moongose.model('Order', orderSchema);
-module.exports = Order;
+
+module.exports = moongose.models.Order || moongose.model('Order', orderSchema);

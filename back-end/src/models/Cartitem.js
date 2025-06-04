@@ -30,5 +30,4 @@ const cartItemSchema = new Schema({
 
 }, { timestamps: true });
 
-const CartItem = moongose.model('CartItem', cartItemSchema);
-module.exports = CartItem;
+module.exports = moongose.models.CartItem || moongose.model('CartItem', cartItemSchema);

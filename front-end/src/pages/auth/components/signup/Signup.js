@@ -36,7 +36,7 @@ export default function Signup() {
     try {
       const response = await signup(formData);
       if (response.status === 201) {
-        navigate('/login');
+        navigate('/register');
         enqueueSnackbar('Signup successful! Please log in.', { variant: 'success', autoHideDuration: 3000 });
       }
     } catch (error) {

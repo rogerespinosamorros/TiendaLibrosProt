@@ -1,6 +1,9 @@
 const express = require('express');
 require('dotenv').config();
+// Importing mongoose and setting strictQuery option
 const mongoose = require('mongoose');
+mongoose.set('strictQuery', false); // or true, depending on your needs
+// ...existing code...
 const { createAdminAcc } = require('./utils/common');
 const authRoute = require('./routes/auth/authRoute');
 const cors = require('cors');

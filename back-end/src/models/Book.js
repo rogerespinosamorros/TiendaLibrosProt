@@ -43,5 +43,4 @@ const bookSchema = new Schema({
     },
 }, {timestamps: true});
 
-const Book = moongose.model('Book', bookSchema);
-module.exports = Book;
+module.exports = moongose.models.Book || moongose.model('Book', bookSchema);

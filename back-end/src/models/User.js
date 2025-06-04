@@ -28,5 +28,4 @@ const userSchema = new Schema({
     }
 }, {timestamps: true});
 
-const User = moongose.model('User', userSchema);
-module.exports = User;
+module.exports = moongose.models.User || moongose.model('User', userSchema);

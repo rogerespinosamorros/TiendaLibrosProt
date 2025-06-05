@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 import { getToken } from '../utils/common';
 
 const instance = axios.create({
@@ -7,7 +7,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use((config) => {
     const token = getToken();
-    if(token)
+    if (token)
         config.headers.Authorization = `Bearer ${token}`;
     return config;
 }, (error) => {

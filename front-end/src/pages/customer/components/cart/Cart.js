@@ -73,7 +73,7 @@ export default function Cart() {
             try {
                 const response = await placeOrder(formData);
                 if (response.status === 200) {
-                    navigate("/customer/dashboard");
+                    navigate(`/customer/dashboard`);
                     enqueueSnackbar("Order placed successfully!", { variant: "success", autoHideDuration: 6000 });
                     setOpen(false);
                 }

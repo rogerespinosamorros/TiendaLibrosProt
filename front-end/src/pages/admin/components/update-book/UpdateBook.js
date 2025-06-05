@@ -16,10 +16,10 @@ import {
     TextField,
     Typography
 } from '@mui/material';
-import { getBookById } from '../../service/admin';
+import { getBookById, updateBook } from '../../service/admin';
 import { useSnackbar } from 'notistack';
 import { Edit } from '@mui/icons-material';
-import { updateBook } from '../../service/admin';
+
 
 
 const defaultTheme = createTheme();
@@ -118,7 +118,7 @@ export default function UpdateBook() {
         try {
              const response = await updateBook(id, book);
              if (response.status === 200) {
-                 navigate('/admin/dashboard');
+                 navigate(`/admin/dashboard`);
                  enqueueSnackbar('Book updated successfully', { variant: 'success', autoHideDuration: 6000 });
              }
         } catch (error) {
@@ -247,6 +247,7 @@ export default function UpdateBook() {
                             </FormControl>
                             <TextField
                                 margin="normal"
+                                required
                                 fullWidth
                                 id="edition"
                                 label="Enter Edition"

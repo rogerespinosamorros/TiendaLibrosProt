@@ -82,12 +82,12 @@ export default function PostBook() {
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
-        const numericValue = name === "price" ? parseFloat(value, 10) : value;
+        const numericValue = (name === "price") ? parseInt(value, 10) : value;
         setBook({
             ...book,
             [name]: numericValue
-        });
-    }
+        })
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -95,7 +95,7 @@ export default function PostBook() {
         try {
             const response = await postBook(book);
             if (response.status === 201) {
-                navigate("/admin/dashboard");
+                navigate(`/admin/dashboard`);
                 enqueueSnackbar("Book posted successfully!", { variant: "success", autoHideDuration: 6000 });
             }
         } catch (error) {
@@ -103,8 +103,8 @@ export default function PostBook() {
         } finally {
         setLoading(false);
     }
-    }
-    // Render the component
+    };
+    
 
 
     return (
@@ -226,6 +226,7 @@ export default function PostBook() {
                             </FormControl>
                             <TextField
                                 margin="normal"
+                                required
                                 fullWidth
                                 id="edition"
                                 label="Enter Edition"

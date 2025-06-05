@@ -1,10 +1,9 @@
-import { Box, Container, Grid, CssBaseline, Button, CircularProgress, TextField, Link, Backdrop } from '@mui/material';
+import { Avatar, Typography, Box, Container, Grid, CssBaseline, Button, CircularProgress, TextField, Link, Backdrop } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
+
 import { useSnackbar } from 'notistack';
 import { signin } from '../../services/auth';
 import { isAdminLoggedIn, isUserLoggedIn, saveToken } from '../../../../utils/common';
@@ -26,7 +25,7 @@ export default function Signin() {
     setFormData({
       ...formData,
       [name]: value
-    });
+    })
   };
 
   const handleSubmit = async (e) => {
@@ -50,9 +49,9 @@ export default function Signin() {
     }
   };
 
-  const handleSignUpClick = () => {
-    navigate('/register');
-  }
+  // const handleSignUpClick = () => {
+  //   navigate('/register');
+  // }
 
   return (
     <>
@@ -61,10 +60,11 @@ export default function Signin() {
           <CssBaseline />
           <Box
             sx={{
+              marginTop: 7,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              marginTop: 7,
+              
 
             }}
           >
@@ -76,23 +76,26 @@ export default function Signin() {
             </Typography>
                 <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                   <TextField
+                    margin="normal"
                     required
                     fullWidth
                     id="email"
                     label="Email Address"
                     name="email"
                     autoComplete="email"
+                    autoFocus
                     value={formData.email}
                     onChange={handleInputChange}
                   />
                   <TextField
+                    margin="normal"
                     required
                     fullWidth
                     name="password"
                     label="Password"
                     type="password"
                     id="password"
-                    autoComplete="new-password"
+                    autoComplete="current-password"
                     value={formData.password}
                     onChange={handleInputChange}
                   />
@@ -107,7 +110,7 @@ export default function Signin() {
               </Button>
               <Grid container> 
                 <Grid item>
-                  <Link variant="body2" onClick={handleSignUpClick}>
+                  <Link variant="body2" onClick={() => navigate('/register')}>
                     Don't have an account? Sign in
                   </Link>
                 </Grid>

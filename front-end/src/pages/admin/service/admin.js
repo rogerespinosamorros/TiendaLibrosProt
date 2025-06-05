@@ -21,7 +21,7 @@ export const deleteBook = async (id) => {
 export const getBooks = async () => {
     try {
         const response = await instance.get(`/api/admin/book`);
-        return response.data;
+        return response;
     } catch (error) {
         throw error;
     }

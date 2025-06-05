@@ -1,10 +1,8 @@
-import { Box, Container, Grid, CssBaseline, Button, CircularProgress, TextField, Link, Backdrop } from '@mui/material';
+import { Avatar, Typography, Box, Container, Grid, CssBaseline, Button, CircularProgress, TextField, Link, Backdrop } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
 import { useSnackbar } from 'notistack';
 import { signup } from '../../services/auth';
 
@@ -36,8 +34,8 @@ export default function Signup() {
     try {
       const response = await signup(formData);
       if (response.status === 201) {
-        navigate('/register');
-        enqueueSnackbar('Signup successful! Please log in.', { variant: 'success', autoHideDuration: 3000 });
+        navigate('/login');
+        enqueueSnackbar('Signup successful!', { variant: 'success', autoHideDuration: 3000 });
       }
     } catch (error) {
       if (error.response && error.response.status === 406) {
@@ -50,9 +48,7 @@ export default function Signup() {
     }
   };
 
-  const handleSignInClick = () => {
-    navigate('/login');
-  }
+  
 
   return (
     <>
@@ -132,13 +128,13 @@ export default function Signup() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                disabled={!formData.firstName || !formData.lastName || !formData.email || !formData.password}
+                disabled={!formData.email || !formData.firstName || !formData.lastName  || !formData.password}
               >
                 {loading ? <CircularProgress color="success" size={24} /> : 'Sign up'}
               </Button>
               <Grid container justifyContent="flex-end">
                 <Grid item>
-                  <Link variant="body2" onClick={handleSignInClick}>
+                  <Link variant="body2" onClick={() => navigate('/login')}>
                     Already have an account? Sign in
                   </Link>
                 </Grid>

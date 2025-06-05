@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import { isAdminLoggedIn, isUserLoggedIn, removeToken } from '../../utils/common';
 
 
@@ -17,7 +17,7 @@ export default function Header() {
   const location = useLocation();
 
   useEffect(() => {
-    const fetchUserRole = async () => {
+    const fetchUserRoles = async () => {
       try {
         const isAdmin = await isAdminLoggedIn();
         const isCustomer = await isUserLoggedIn();
@@ -27,7 +27,7 @@ export default function Header() {
         console.error(`Error fetching user role: ${error}`);
       }
     };
-    fetchUserRole();
+    fetchUserRoles();
   }, [location]);
 
   const handleLogout = () => {
@@ -37,28 +37,28 @@ export default function Header() {
 
   return (
     <>
-        {!isCustomer && !isAdmin && (
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
+      {!isCustomer && !isAdmin && (
+        <Box sx={{ flexGrow: 1 }}>
+          <AppBar position="static">
+            <Toolbar>
+              <IconButton
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                sx={{ mr: 2 }}
               >
                 <MenuIcon />
               </IconButton>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Tienda de Libros
-            </Typography>
-            <Button component={Link} to="/login" color="inherit">Login</Button>
-            <Button component={Link} to="/register" color="inherit">Register</Button>
-          </Toolbar>
-        </AppBar>
-      </Box>
-        )}
+              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                Tienda de Libros
+              </Typography>
+              <Button component={Link} to="/login" color="inherit">Login</Button>
+              <Button component={Link} to="/register" color="inherit">Register</Button>
+            </Toolbar>
+          </AppBar>
+        </Box>
+      )}
 
       {isAdmin && (
         <Box sx={{ flexGrow: 1 }}>
@@ -74,7 +74,7 @@ export default function Header() {
                 <MenuIcon />
               </IconButton>
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                Tienda de Libros - Admin
+                Administrator
               </Typography>
               <Button component={Link} to="/admin/dashboard" color="inherit">Dashboard</Button>
               <Button component={Link} to="/admin/book/post" color="inherit">Post Book</Button>
@@ -112,5 +112,5 @@ export default function Header() {
     </>
   )
 };
-    
+
 

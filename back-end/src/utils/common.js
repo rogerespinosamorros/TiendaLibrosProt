@@ -20,7 +20,7 @@ const createAdminAcc = async () => {
             firstName: firstName,
             lastName: lastName,
             role: 'admin',
-            password: hashPassword,
+            password: hashPassword
         });
         await admin.save();
         console.log('Admin account created successfully');

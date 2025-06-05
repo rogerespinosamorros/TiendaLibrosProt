@@ -15,7 +15,7 @@ const getCartByUser = async (req, res) => {
     try {
         const userId = req.user.id;
         const response = await fetchCartByUser(userId);
-        res.status(response.statis).json(response.data);
+        res.status(response.status).json(response.data);
     } catch(error) {
         res.status(500).json({ error: error.message });
     }

@@ -5,26 +5,26 @@ const userSchema = new Schema({
     email:{
         type: String,
         required: true,
-        unique: true,
+        unique: true
     },
     password:{
         type: String,
-        required: true,
+        required: true
     },
     firstName:{
         type: String,
-        required: true,
+        required: true
     },
     lastName:{
         type: String,
-        required: true,
+        required: true
     },
     role:{
         type: String,
         required: true,
         // 'admin' or 'user'
-        enum: ['admin', 'user'],
-        default: 'user',
+        enum: ['customer', 'admin'],
+        default: 'customer',
     }
 }, {timestamps: true});
 

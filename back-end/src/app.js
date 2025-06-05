@@ -19,7 +19,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/tiendaLibrosProt';
 const corsorigin = process.env.CORS_ORIGIN;
 
@@ -46,10 +46,10 @@ app.listen(port, () => {
 app.use('/api/auth', authRoute);
 
 // Admin routes
-app.use('/api/admin/books', adminBookRoute);
+app.use('/api/admin/book', adminBookRoute);
 app.use('/api/admin/order', adminOrderRoute);
 
 // Customer routes
-app.use('/api/customer/books', customerBookRoute);
+app.use('/api/customer/book', customerBookRoute);
 app.use('/api/customer/cart', customerCartRoute);
 app.use('/api/customer/order', customerOrderRoute);

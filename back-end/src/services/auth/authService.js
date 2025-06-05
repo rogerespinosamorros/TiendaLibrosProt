@@ -8,9 +8,10 @@ const Order = require('../../models/Order');
 const createUser = async (userData) => {
     try {
         const email = userData.email;
+        const password = userData.password;
         const firstName = userData.firstName;
         const lastName = userData.lastName;
-        const password = userData.password;
+        
 
         const ifExistsUser = await User.findOne({ email: email });
         if (ifExistsUser) {
@@ -22,7 +23,7 @@ const createUser = async (userData) => {
             email: email,
             firstName: firstName,
             lastName: lastName,
-            role: 'user',
+            role: 'customer',
             password: hashedPassword,
         });
         const order = new Order({

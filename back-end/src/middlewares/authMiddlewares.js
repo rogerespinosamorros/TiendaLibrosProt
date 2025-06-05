@@ -11,7 +11,7 @@ const authenticateJWT = (req, res, next) => {
 
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
         if (err) {
-            console.error('JWT verification error:', err);
+            console.error(`JWT verification error: ${err}`);
             return res.status(403).json({ message: 'Token is not valid' });
         };
         req.user = user;
@@ -22,7 +22,7 @@ const authenticateJWT = (req, res, next) => {
 
 const authorizeRole = (role) => {
     return (req, res, next) => {
-        if (!req.user || req.user.role !== role) {
+        if (req.user.role !== role) {
             return res.status(403).json({ message: 'Forbidden: Not the correct role' });
         }
         next();

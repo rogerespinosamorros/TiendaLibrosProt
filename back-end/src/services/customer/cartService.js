@@ -1,6 +1,6 @@
-const Order = require('../../models/order');
-const Book = require('../../models/book');
-const User = require('../../models/user');
+const Order = require('../../models/Order');
+const Book = require('../../models/Book');
+const User = require('../../models/User');
 const CartItem = require('../../models/cartItem');
 
 
@@ -16,7 +16,7 @@ const addBookToCart = async (userId, bookId) => {
         User.findById(userId)
     ]);
 
-    if (!book || !user) return { status: 404, data: 'Book or user not fiund' };
+    if (!book || !user) return { status: 404, data: 'Book or user not found' };
 
     const savedCartItem = await new CartItem({
         order: activeOrder,

@@ -6,7 +6,7 @@ const {
 const createBook = async (req, res) => {
     try {
         const newBook = await postBook(req.body);
-        res.status(201).json({ message: 'Book created successfully', book: newBook });
+        res.status(201).json({ message: 'Book created successfully', body: newBook });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -25,7 +25,7 @@ const getBookById = async (req, res) => {
     try {
         const book = await fetchBookById(req.params.id);
         if (!book)
-            return res.status(404).json({ message: 'Book not found' });
+             res.status(404).json({ message: 'Book not found' });
         res.status(200).json(book);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -45,8 +45,8 @@ const deleteBookById = async (req, res) => {
 
 const updateBook = async (req, res) => {
     try {
-        const updatedBook = await modifyBook(req.params.id, req.body);
-        if (!updatedBook)
+        const book = await modifyBook(req.params.id, req.body);
+        if (!book)
             res.status(404).json({ message: 'Book not found' });
         res.status(200).json({ message: 'Book updated successfully', book });
     } catch (error) {

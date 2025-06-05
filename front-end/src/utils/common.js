@@ -1,5 +1,5 @@
-import Cookies from 'js-cookie';
-import {jwtDecode} from 'jwt-decode';
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 const TOKEN = 'token';
 
@@ -13,9 +13,8 @@ export const getToken = () => {
 
 export const decodeToken = () => {
     const token = getToken();
-    if (!token) {
+    if (!token) 
         return null;
-    }
     try {
         return jwtDecode(token);
     } catch (error) {
@@ -31,7 +30,7 @@ export const isAdminLoggedIn = () => {
 
 export const isUserLoggedIn = () => {
     const decodedToken = decodeToken();
-    return decodedToken?.role === 'user';
+    return decodedToken?.role === 'customer';
 }
 
 export const removeToken = () => {

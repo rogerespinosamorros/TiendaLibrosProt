@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { getBooks, searchBook } from '../../service/customer';
+import { getBooks, searchBook, addBookToCart } from '../../service/customer';
 import { useSnackbar } from 'notistack';
 
 import { Box, Grid, Button, Typography, Backdrop, CircularProgress, Paper, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
-import { addBookToCart } from '../../service/customer';
+import { useNavigate } from 'react-router-dom';
+
 
 const Img = styled('img')({
     margin: 'auto',
@@ -79,6 +80,7 @@ export default function CustomerDashboard() {
     ]);
    
     const { enqueueSnackbar } = useSnackbar();
+    // const navigate = useNavigate();
 
     const fetchBooks = async () => {
         setLoading(true);
@@ -95,10 +97,10 @@ export default function CustomerDashboard() {
     };
 
    
-// eslint-disable-next-line
-useEffect(() => {
-    fetchBooks();
-}, []);
+
+    useEffect(() => {
+        fetchBooks();
+    }, []);
 
 
     const handleGenreChange = async (e) => {
@@ -132,7 +134,7 @@ useEffect(() => {
         } finally {
             setLoading(false);
         }
-    }
+    };
 
 
 
@@ -169,7 +171,7 @@ useEffect(() => {
             <Box sx={{ flexGrow: 1, p: 5 }}>
                 <Grid container spacing={2}>
                     {books.map((book) => (
-                        <Grid item xs={12} md={6} key={book.id}>
+                        <Grid item xs={12} md={6} key={book._id}>
                             <Item>
                                 <Box sx={{ display: 'flex', p: 3, alignItems: 'center' }}>
                                     <Box sx={{ width: '40%', display: 'flex', justifyContent: 'center', p: 2 }}>
@@ -189,42 +191,49 @@ useEffect(() => {
                                             <Typography variant="body2" color="text.secondary">
                                                 <strong>{book.author}</strong>
                                             </Typography>
+
                                             <Typography variant="body2" color="text.secondary">
                                                 Description:
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary">
                                                 <strong>{book.description}</strong>
                                             </Typography>
+
                                             <Typography variant="body2" color="text.secondary">
                                                 Price:
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary">
                                                 <strong>${book.price}</strong>
                                             </Typography>
+
                                             <Typography variant="body2" color="text.secondary">
                                                 Genre:
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary">
                                                 <strong>{book.genre}</strong>
                                             </Typography>
+
                                             <Typography variant="body2" color="text.secondary">
                                                 Condition:
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary">
                                                 <strong>{book.condition}</strong>
                                             </Typography>
+
                                             <Typography variant="body2" color="text.secondary">
                                                 Edition:
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary">
                                                 <strong>{book.edition}</strong>
                                             </Typography>
+
                                             <Typography variant="body2" color="text.secondary">
                                                 Status:
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary">
                                                 <strong>{book.status}</strong>
                                             </Typography>
+
                                         </Box>
                                         {book.status === "Available" && (
                                             <Button

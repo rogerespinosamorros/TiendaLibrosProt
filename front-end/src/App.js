@@ -1,15 +1,16 @@
-import './App.css';
 import Header from './pages/header/Header';
 import { Route, Routes } from 'react-router-dom';
 
 
-import Signup from './pages/auth/components/signup/Signup';
-import Signin from './pages/auth/components/signin/Signin';
+import Signup from '../src/pages/auth/components/signup/Signup';
+import Signin from '../src/pages/auth/components/signin/Signin';
+
 import AdminDashboard from './pages/admin/components/dashboard/AdminDashboard';
-import CustomerDashboard from './pages/customer/components/dashboard/CustomerDashboard';
 import PostBook from './pages/admin/components/post-book/PostBook';
 import UpdateBook from './pages/admin/components/update-book/UpdateBook';
 import ViewOrders from './pages/admin/components/view-orders/ViewOrders';
+
+import CustomerDashboard from './pages/customer/components/dashboard/CustomerDashboard';
 import Cart from './pages/customer/components/cart/Cart';
 import MyOrders from './pages/customer/components/my-orders/MyOrders';
 

@@ -3,9 +3,9 @@ import { deleteBook, getBooks, searchBook } from '../../service/admin';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
 import { Box, Grid, Button, Typography, Backdrop, CircularProgress, Paper, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
-import { Delete as DeleteIcon } from '@mui/icons-material';
+import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
-import EditIcon from '@mui/icons-material/Edit';
+
 
 const Img = styled('img')({
     margin: 'auto',
@@ -112,8 +112,8 @@ export default function AdminDashboard() {
     const handleDeleteBook = async (id) => {
         setLoading(true);
         try {
-            const respone = await deleteBook(id);
-            if (respone.status === 200) {
+            const response = await deleteBook(id);
+            if (response.status === 200) {
                 enqueueSnackbar('Book deleted successfully', { variant: 'success', autoHideDuration: 3000 });
                 fetchBooks(); // Refresh the book list after deletion
             }
@@ -145,10 +145,11 @@ export default function AdminDashboard() {
                     <InputLabel id="genre-label">Select genre to search</InputLabel>
                     <Select
                         labelId="genre-label"
-                        id="genre-select"
+                        id="genre"
                         value={selectedGenre}
-                        label="Select genre to search"
                         onChange={handleGenreChange}
+                        label="Select a genre to search"
+                        
                     >
                         <MenuItem value="">Select a genre</MenuItem>
                         {genres.map((genre) => (
@@ -163,7 +164,7 @@ export default function AdminDashboard() {
             <Box sx={{ flexGrow: 1, p: 5 }}>
                 <Grid container spacing={2}>
                     {books.map((book) => (
-                        <Grid item xs={12} md={6} key={book.id}>
+                        <Grid item xs={12} md={6} key={book._id}>
                             <Item>
                                 <Box sx={{ display: 'flex', p: 3, alignItems: 'center' }}>
                                     <Box sx={{ width: '40%', display: 'flex', justifyContent: 'center', p: 2 }}>
@@ -175,57 +176,64 @@ export default function AdminDashboard() {
                                         </Typography>
                                         <Box sx={{ display: 'grid', gridTemplateColumns: '100px 1fr', gap: 1, mt: 2 }}>
 
-                                        </Box>
-                                        <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
+                                        
+                                        
                                             <Typography variant="body2" color="text.secondary">
                                                 Author:
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary">
                                                 <strong>{book.author}</strong>
                                             </Typography>
+
                                             <Typography variant="body2" color="text.secondary">
                                                 Description:
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary">
                                                 <strong>{book.description}</strong>
                                             </Typography>
+
                                             <Typography variant="body2" color="text.secondary">
                                                 Price:
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary">
                                                 <strong>${book.price}</strong>
                                             </Typography>
+
                                             <Typography variant="body2" color="text.secondary">
                                                 Genre:
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary">
                                                 <strong>{book.genre}</strong>
                                             </Typography>
+
                                             <Typography variant="body2" color="text.secondary">
                                                 Condition:
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary">
                                                 <strong>{book.condition}</strong>
                                             </Typography>
+
                                             <Typography variant="body2" color="text.secondary">
                                                 Edition:
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary">
                                                 <strong>{book.edition}</strong>
                                             </Typography>
+
                                             <Typography variant="body2" color="text.secondary">
                                                 Status:
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary">
                                                 <strong>{book.status}</strong>
                                             </Typography>
+
                                         </Box>
                                         <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
                                             <Button
                                                 variant='outlined'
                                                 color='primary'
                                                 endIcon={<EditIcon />}
-                                                onClick={() => handleUpdateBookClick(book.id)}
+                                                onClick={() => handleUpdateBookClick(book._id)}
                                             >
                                                 Update
                                             </Button>
@@ -233,7 +241,7 @@ export default function AdminDashboard() {
                                                 variant='outlined'
                                                 color='error'
                                                 endIcon={<DeleteIcon />}
-                                                onClick={() => handleDeleteBook(book.id)}
+                                                onClick={() => handleDeleteBook(book._id)}
                                             >
                                                 Delete
                                             </Button>
@@ -257,4 +265,4 @@ export default function AdminDashboard() {
         </>
     )
 
-}
+};

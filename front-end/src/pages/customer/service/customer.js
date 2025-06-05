@@ -3,7 +3,7 @@ import instance from "../../../environment/axiosInstance";
 export const getBooks = async () => {
     try {
         const response = await instance.get(`/api/customer/book`);
-        return response.data;
+        return response;
     } catch (error) {
         throw error;
     }

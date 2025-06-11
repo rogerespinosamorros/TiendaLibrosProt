@@ -62,3 +62,12 @@ export const getOrders = async () => {
         throw error;
     }
 }
+
+export const deleteOrder = async (orderId) => {
+    try {
+        const response = await instance.delete(`/api/admin/order/${orderId}`);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+ }

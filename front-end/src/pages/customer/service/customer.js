@@ -53,3 +53,12 @@ export const getMyOrders = async () => {
         throw error;
     }
 }
+
+export const deleteCartItem = async (cartItemId) => {
+    try {
+        const response = await instance.delete(`/api/customer/cart/${cartItemId}`);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}

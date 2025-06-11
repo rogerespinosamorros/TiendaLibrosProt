@@ -55,6 +55,7 @@ export default function MyOrders() {
                         <TableHead>
                             <TableRow>
                                 <TableCell>Tracking ID</TableCell>
+                                
                                 <TableCell align="right">Amount</TableCell>
                                 <TableCell align="right">Description</TableCell>
                                 <TableCell align="right">Address</TableCell>
@@ -70,6 +71,7 @@ export default function MyOrders() {
                                     <TableCell component="th" scope="row">
                                        {row.trackingId} 
                                     </TableCell>
+                                    
                                     <TableCell align="right">{row.amount}</TableCell>
                                     <TableCell align="right">{row.orderDescription}</TableCell>
                                     <TableCell align="right">{row.address}</TableCell>

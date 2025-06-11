@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getCartByUser, placeOrder } from "../../service/customer";
+import { getCartByUser, placeOrder, deleteCartItem } from "../../service/customer";
 import { Backdrop, Box, CircularProgress, Grid, Typography, Paper, Button, Dialog, DialogContentText, TextField, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import { useNavigate } from "react-router-dom";
@@ -60,29 +60,46 @@ export default function Cart() {
     }, []);
 
     const handleInputChange = (event) => {
-            const { name, value } = event.target;
-            setFormData({
-                ...formData,
-                [name]: value
-            });
-        };
-    
-        const handleSubmit = async (e) => {
-            e.preventDefault();
-            setLoading(true);
-            try {
-                const response = await placeOrder(formData);
-                if (response.status === 200) {
-                    navigate(`/customer/dashboard`);
-                    enqueueSnackbar("Order placed successfully!", { variant: "success", autoHideDuration: 6000 });
-                    setOpen(false);
-                }
-            } catch (error) {
-                enqueueSnackbar("Getting error while placing an order", { variant: "error", autoHideDuration: 6000 });
-            } finally {
+        const { name, value } = event.target;
+        setFormData({
+            ...formData,
+            [name]: value
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            const response = await placeOrder(formData);
+            if (response.status === 200) {
+                navigate(`/customer/dashboard`);
+                enqueueSnackbar("Order placed successfully!", { variant: "success", autoHideDuration: 6000 });
+                setOpen(false);
+            }
+        } catch (error) {
+            enqueueSnackbar("Getting error while placing an order", { variant: "error", autoHideDuration: 6000 });
+        } finally {
             setLoading(false);
         }
+    }
+
+    const handleDeleteCartItem = async (cartItemId) => {
+        setLoading(true);
+        try {
+            const response = await deleteCartItem(cartItemId);
+            if (response.status === 200) {
+                enqueueSnackbar("Cart item deleted successfully!", { variant: "success" });
+                fetchCartByUser();
+            }
+        } catch (error) {
+            console.log(error)
+            enqueueSnackbar("Error deleting cart item", { variant: "error"});
+        } finally {
+            setLoading(false);
         }
+    }
+
 
 
     return (
@@ -102,6 +119,14 @@ export default function Cart() {
                                             <Typography variant="body1" className="item-price">
                                                 Price: ${item.book.price}
                                             </Typography>
+                                            <Button
+                                                variant="outlined"
+                                                color="error"
+                                                sx={{ mt:1 }}
+                                                onClick={() => handleDeleteCartItem(item._id)}
+                                            >
+                                                Delete
+                                            </Button>
                                         </Item>
                                     </Grid>
                                 ))}
@@ -114,7 +139,7 @@ export default function Cart() {
                                 <Typography>Total Amount: ${order.amount}</Typography>
                             </Grid>
                             <Grid item>
-                                <Button variant="contained" color="primary" onClick={() => setOpen(true)} sx={{ mt:2 }}>
+                                <Button variant="contained" color="primary" onClick={() => setOpen(true)} sx={{ mt: 2 }}>
                                     Place Order
                                 </Button>
                             </Grid>
@@ -131,7 +156,7 @@ export default function Cart() {
                         justifyContent: 'center',
                     }}
                 >
-                    <Typography variant="h4">Nothing to see here.</Typography>
+                    <Typography variant="h4">Nothing to see here. Cart is empty</Typography>
                 </Box>
             )}
 
@@ -145,39 +170,39 @@ export default function Cart() {
             >
                 <DialogTitle>Place Order</DialogTitle>
                 <DialogContent>
-                <DialogContentText>
-                    Place your order by adding any special instruction in description and adress.
-                </DialogContentText>
-                <TextField
-                    autoFocus
-                    required
-                    margin="dense"
-                    id="address"
-                    name="address"
-                    label="Address"
-                    type="text"
-                    multiline
-                    maxRows={4}
-                    fullWidth
-                    variant="standard"
-                    value={formData.address}
-                    onChange={handleInputChange}
-                />
-                <TextField
-                    autoFocus
-                    required
-                    margin="dense"
-                    id="orderDescription"
-                    name="orderDescription"
-                    label="Description or Instruction"
-                    type="text"
-                    multiline
-                    maxRows={4}
-                    fullWidth
-                    variant="standard"
-                    value={formData.orderDescription}
-                    onChange={handleInputChange}
-                />
+                    <DialogContentText>
+                        Place your order by adding any special instruction in description and adress.
+                    </DialogContentText>
+                    <TextField
+                        autoFocus
+                        required
+                        margin="dense"
+                        id="address"
+                        name="address"
+                        label="Address"
+                        type="text"
+                        multiline
+                        maxRows={4}
+                        fullWidth
+                        variant="standard"
+                        value={formData.address}
+                        onChange={handleInputChange}
+                    />
+                    <TextField
+                        autoFocus
+                        required
+                        margin="dense"
+                        id="orderDescription"
+                        name="orderDescription"
+                        label="Description or Instruction"
+                        type="text"
+                        multiline
+                        maxRows={4}
+                        fullWidth
+                        variant="standard"
+                        value={formData.orderDescription}
+                        onChange={handleInputChange}
+                    />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpen(false)}>Cancel</Button>

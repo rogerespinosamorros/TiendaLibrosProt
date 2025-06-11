@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Backdrop, Box, CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
-import { getOrders } from "../../service/admin";
+import { Backdrop, Box, Button, CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { getOrders, deleteOrder } from "../../service/admin";
 
 
 
@@ -32,6 +32,20 @@ export default function ViewOrders() {
         const options = { day: 'numeric', month: 'short', year: 'numeric' };
         return date.toLocaleDateString('en-EU', options)
     };
+
+    const handleDeleteOrder = async (orderId) => {
+        setLoading(true);
+        try {
+            const response = await deleteOrder(orderId);
+            if (response.status === 200) {
+                setOrders(orders.filter(order => order._id !== orderId));
+            }
+        } catch (error) {
+            console.error(error.message);
+        } finally {
+            setLoading(false);
+        }
+    }
 
 
 
@@ -75,6 +89,13 @@ export default function ViewOrders() {
                                     <TableCell align="right">{row.orderDescription}</TableCell>
                                     <TableCell align="right">{row.address}</TableCell>
                                     <TableCell align="right">{formatPlacedAtDate(row.updatedAt)}</TableCell>
+                                         <Button
+                                            variant="outlined"
+                                            color="error"
+                                            onClick={() => handleDeleteOrder(row._id)}
+                                        >
+                                            Delete
+                                        </Button>
                                 </TableRow>
                             ))}
                         </TableBody>

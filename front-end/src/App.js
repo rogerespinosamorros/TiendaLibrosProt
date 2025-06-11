@@ -2,6 +2,7 @@ import Header from './pages/header/Header';
 import { Route, Routes } from 'react-router-dom';
 
 
+
 import Signup from '../src/pages/auth/components/signup/Signup';
 import Signin from '../src/pages/auth/components/signin/Signin';
 
@@ -13,6 +14,7 @@ import ViewOrders from './pages/admin/components/view-orders/ViewOrders';
 import CustomerDashboard from './pages/customer/components/dashboard/CustomerDashboard';
 import Cart from './pages/customer/components/cart/Cart';
 import MyOrders from './pages/customer/components/my-orders/MyOrders';
+import Home from './Home';
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
     {/* Header component */}
     <Header />
     <Routes>
+      {/* Home component */}
+      <Route path='/' element={<Home />} />
       {/* Auth components */}
       <Route path='/register' element={<Signup />} />
       <Route path='/login' element={< Signin />} />

@@ -5,7 +5,7 @@ import { useSnackbar } from 'notistack';
 import { Box, Grid, Button, Typography, Backdrop, CircularProgress, Paper, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 const Img = styled('img')({
@@ -80,7 +80,7 @@ export default function CustomerDashboard() {
     ]);
    
     const { enqueueSnackbar } = useSnackbar();
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const fetchBooks = async () => {
         setLoading(true);

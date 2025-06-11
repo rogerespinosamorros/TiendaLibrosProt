@@ -53,3 +53,4 @@ app.use('/api/admin/order', adminOrderRoute);
 app.use('/api/customer/book', customerBookRoute);
 app.use('/api/customer/cart', customerCartRoute);
 app.use('/api/customer/order', customerOrderRoute);
+app.use('/api/customer/cart', customerCartRoute);

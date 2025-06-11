@@ -175,9 +175,8 @@ export default function AdminDashboard() {
                                             <strong>{book.title}</strong>
                                         </Typography>
                                         <Box sx={{ display: 'grid', gridTemplateColumns: '100px 1fr', gap: 1, mt: 2 }}>
-
-                                        
-                                        
+                                            </Box>
+                                            <Box sx={{ display: 'flex', gap: 2, mt: 2}}>
                                             <Typography variant="body2" color="text.secondary">
                                                 Author:
                                             </Typography>

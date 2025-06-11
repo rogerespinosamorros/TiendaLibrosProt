@@ -13,7 +13,7 @@ const orderSchema = new Schema({
     },
     address: {
         type: String,
-        required: true
+        required: false
     },
     orderStatus: {
         type: String,
@@ -32,9 +32,8 @@ const orderSchema = new Schema({
     },
     cartItem: [{
         type: Schema.Types.ObjectId,
-        ref: 'Order'
-        
-    }],
+        ref: 'CartItem',
+        }],
 
 
 }, { timestamps: true });

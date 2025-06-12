@@ -80,7 +80,7 @@ export default function CustomerDashboard() {
     ]);
    
     const { enqueueSnackbar } = useSnackbar();
-    const navigate = useNavigate();
+    
 
     const fetchBooks = async () => {
         setLoading(true);
@@ -140,6 +140,19 @@ export default function CustomerDashboard() {
 
     return (
         <>
+        <Box
+                  sx={{
+                    minHeight: "100vh",
+                    width: "100vw",
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginTop: 0,
+                    background: "linear-gradient(120deg, #f6d365 0%, #fda085 100%)", 
+                  }}
+                >
+                  
             <Grid
                 sx={{
                     marginTop: 3,
@@ -253,8 +266,10 @@ export default function CustomerDashboard() {
                                 </Box>
                             </Item>
                         </Grid>
+                        
                     ))}
                 </Grid>
+                </Box>
             </Box>
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}

@@ -104,8 +104,23 @@ export default function Cart() {
 
     return (
         <>
+        <Box
+          sx={{
+            minHeight: "100vh",
+            width: "100vw",
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 0,
+            background: "linear-gradient(120deg, #f6d365 0%, #fda085 100%)", 
+          }}
+        >
+          
             {cartItems.length > 0 ? (
                 <>
+                
+          
                     <Box sx={{ flexGrow: 1, p: 5 }}>
                         <Grid container spacing={1}>
                             <Grid container item spacing={3}>
@@ -145,6 +160,7 @@ export default function Cart() {
                             </Grid>
                         </Grid>
                     </Box>
+                    
                 </>
             ) : (
                 <Box
@@ -209,6 +225,8 @@ export default function Cart() {
                     <Button type="submit">Place Order</Button>
                 </DialogActions>
             </Dialog>
+            </Box>
+            
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={loading}

@@ -49,13 +49,24 @@ export default function Signin() {
     }
   };
 
-  // const handleSignUpClick = () => {
-  //   navigate('/register');
-  // }
+  
 
   return (
     <>
       <ThemeProvider theme={defaultTheme}>
+        <Box
+          sx={{
+            minHeight: "100vh",
+            width: "100vw",
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 0,
+            background: "linear-gradient(120deg, #f6d365 0%, #fda085 100%)", 
+          }}
+        >
+          
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <Box
@@ -118,6 +129,7 @@ export default function Signin() {
             </Box>
           </Box>
         </Container>
+        </Box>
       </ThemeProvider>
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}

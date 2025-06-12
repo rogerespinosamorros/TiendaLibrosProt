@@ -48,12 +48,26 @@ export default function Signup() {
     }
   };
 
-  
+
 
   return (
     <>
       <ThemeProvider theme={defaultTheme}>
-        <Container component="main" maxWidth="xs">
+        <Box
+          sx={{
+            minHeight: "100vh",
+            width: "100vw",
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 0,
+            background: "linear-gradient(120deg, #f6d365 0%, #fda085 100%)", 
+          }}
+        >
+          
+        
+        <Container component="main" maxWidth="xs" >
           <CssBaseline />
           <Box
             sx={{
@@ -61,6 +75,7 @@ export default function Signup() {
               flexDirection: 'column',
               alignItems: 'center',
               marginTop: 6,
+
 
             }}
           >
@@ -128,7 +143,7 @@ export default function Signup() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                disabled={!formData.email || !formData.firstName || !formData.lastName  || !formData.password}
+                disabled={!formData.email || !formData.firstName || !formData.lastName || !formData.password}
               >
                 {loading ? <CircularProgress color="success" size={24} /> : 'Sign up'}
               </Button>
@@ -141,7 +156,9 @@ export default function Signup() {
               </Grid>
             </Box>
           </Box>
+          
         </Container>
+        </Box>
       </ThemeProvider>
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}

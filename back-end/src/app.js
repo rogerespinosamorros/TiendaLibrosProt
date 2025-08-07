@@ -12,6 +12,8 @@ const adminOrderRoute = require('./routes/admin/orderRoute')
 const customerBookRoute = require('./routes/customer/bookRoute');
 const customerCartRoute = require('./routes/customer/cartRoute');
 const customerOrderRoute = require('./routes/customer/orderRoute')
+const customerProfileRoute = require('./routes/customer/profileRoute');
+
 
 
 const app = express();
@@ -53,4 +55,4 @@ app.use('/api/admin/order', adminOrderRoute);
 app.use('/api/customer/book', customerBookRoute);
 app.use('/api/customer/cart', customerCartRoute);
 app.use('/api/customer/order', customerOrderRoute);
-app.use('/api/customer/cart', customerCartRoute);
+app.use('/api/customer/profile', customerProfileRoute);

@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useSnackbar } from 'notistack';
 import { signup } from '../../services/auth';
+import ROUTES from '../../../../utils/constants/routes';
+
 
 const defaultTheme = createTheme();
 
@@ -28,13 +30,23 @@ export default function Signup() {
     });
   };
 
+  const validateEmail = (email) => {
+    const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/;
+    return regex.test(email);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Validación email
+    if (!validateEmail(formData.email)) {
+      enqueueSnackbar("Introduce un email válido", { variant: 'warning' });
+      return;
+    }
     setLoading(true);
     try {
       const response = await signup(formData);
       if (response.status === 201) {
-        navigate('/login');
+        navigate(ROUTES.AUTH.LOGIN);
         enqueueSnackbar('Signup successful!', { variant: 'success', autoHideDuration: 3000 });
       }
     } catch (error) {
@@ -62,102 +74,110 @@ export default function Signup() {
             alignItems: 'center',
             justifyContent: 'center',
             marginTop: 0,
-            background: "linear-gradient(120deg, #f6d365 0%, #fda085 100%)", 
+            background: "linear-gradient(120deg, #f6d365 0%, #fda085 100%)",
           }}
         >
-          
-        
-        <Container component="main" maxWidth="xs" >
-          <CssBaseline />
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              marginTop: 6,
 
 
-            }}
-          >
-            <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign Up
-            </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    autoComplete="given-name"
-                    name="firstName"
-                    required
-                    fullWidth
-                    id="firstName"
-                    label="First Name"
-                    autoFocus
-                    value={formData.firstName}
-                    onChange={handleInputChange}
-                  />
+          <Container component="main" maxWidth="xs" >
+            <CssBaseline />
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                marginTop: 6,
+
+
+              }}
+            >
+              <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+                <LockOutlinedIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                Sign Up
+              </Typography>
+              <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      autoComplete="given-name"
+                      name="firstName"
+                      required
+                      fullWidth
+                      id="firstName"
+                      label="First Name"
+                      autoFocus
+                      value={formData.firstName}
+                      onChange={handleInputChange}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      required
+                      fullWidth
+                      id="lastName"
+                      label="Last Name"
+                      name="lastName"
+                      autoComplete="family-name"
+                      value={formData.lastName}
+                      onChange={handleInputChange}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      id="email"
+                      label="Email Address"
+                      name="email"
+                      autoComplete="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      name="password"
+                      label="Password"
+                      type="password"
+                      id="password"
+                      autoComplete="new-password"
+                      value={formData.password}
+                      onChange={handleInputChange}
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="lastName"
-                    label="Last Name"
-                    name="lastName"
-                    autoComplete="family-name"
-                    value={formData.lastName}
-                    onChange={handleInputChange}
-                  />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  disabled={
+                    !formData.email ||
+                    !validateEmail(formData.email) ||
+                    !formData.firstName ||
+                    !formData.lastName ||
+                    !formData.password
+                  }
+
+                >
+                  {loading ? <CircularProgress color="success" size={24} /> : 'Sign up'}
+                </Button>
+                <Grid container justifyContent="flex-end">
+                  <Grid item>
+                    <Link variant="body2" onClick={() => navigate(ROUTES.AUTH.LOGIN)}>
+                      Already have an account? Sign in
+                    </Link>
+
+                  </Grid>
                 </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="new-password"
-                    value={formData.password}
-                    onChange={handleInputChange}
-                  />
-                </Grid>
-              </Grid>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                disabled={!formData.email || !formData.firstName || !formData.lastName || !formData.password}
-              >
-                {loading ? <CircularProgress color="success" size={24} /> : 'Sign up'}
-              </Button>
-              <Grid container justifyContent="flex-end">
-                <Grid item>
-                  <Link variant="body2" onClick={() => navigate('/login')}>
-                    Already have an account? Sign in
-                  </Link>
-                </Grid>
-              </Grid>
+              </Box>
             </Box>
-          </Box>
-          
-        </Container>
+
+          </Container>
         </Box>
       </ThemeProvider>
       <Backdrop

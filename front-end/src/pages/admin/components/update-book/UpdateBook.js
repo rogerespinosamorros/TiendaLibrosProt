@@ -19,6 +19,9 @@ import {
 import { getBookById, updateBook } from '../../service/admin';
 import { useSnackbar } from 'notistack';
 import { Edit } from '@mui/icons-material';
+import GENRES from '../../../../utils/constants/genres';
+import ROUTES from '../../../../utils/constants/routes';
+
 
 
 
@@ -27,47 +30,6 @@ const defaultTheme = createTheme();
 export default function UpdateBook() {
     const { id } = useParams();
     const [conditions] = useState(["New", "Near New", "Good", "Acceptable"]);
-    const [genres] = useState([
-        "Fiction",
-        "Non-Fiction",
-        "Mistery",
-        "Thriller",
-        "Science Fiction",
-        "Fantasy",
-        "Historical Fiction",
-        "Romance",
-        "Horror",
-        "Biography",
-        "Memoir",
-        "Self-Help",
-        "Health & Wellness",
-        "Travel",
-        "Science",
-        "Philosophy",
-        "Psychology",
-        "Poetry",
-        "Religion & Spirituality",
-        "Cooking",
-        "Art & Photography",
-        "Children's Literature",
-        "Young Adult",
-        "Graphic Novel",
-        "Drama",
-        "Business & Economics",
-        "Education",
-        "Politics",
-        "Law",
-        "Anthology",
-        "Adventure",
-        "Classics",
-        "Short Stories",
-        "Humor",
-        "Sports",
-        "Comics",
-        "Music",
-        "True Crime",
-        "Technology"
-    ]);
     const [statuses] = useState(["Available", "Sold"]);
 
     const [book, setBook] = useState({
@@ -84,6 +46,7 @@ export default function UpdateBook() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const { enqueueSnackbar } = useSnackbar();
+
 
     const fetchBook = async () => {
         setLoading(true);
@@ -105,7 +68,7 @@ export default function UpdateBook() {
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
-        const numericValue = (name === 'price') ? parseInt(value, 10) : value;
+        const numericValue = (name === "price") ? parseFloat(value) : value;
         setBook({
             ...book,
             [name]: numericValue
@@ -118,7 +81,7 @@ export default function UpdateBook() {
         try {
             const response = await updateBook(id, book);
             if (response.status === 200) {
-                navigate(`/admin/dashboard`);
+                navigate(ROUTES.ADMIN_DASHBOARD);
                 enqueueSnackbar('Book updated successfully', { variant: 'success', autoHideDuration: 6000 });
             }
         } catch (error) {
@@ -160,6 +123,18 @@ export default function UpdateBook() {
                             <Typography component="h1" variant="h5">
                                 Update Book
                             </Typography>
+                            <Box sx={{ width: '100%', textAlign: 'center', mt: 2 }}>
+                                <img
+                                    src={book.imageUrl}
+                                    alt={book.title}
+                                    style={{ width: '150px', height: '220px', objectFit: 'cover', borderRadius: '4px' }}
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = '/default-book.png';
+                                    }}
+                                />
+                            </Box>
+
                             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                                 <TextField
                                     margin="normal"
@@ -219,9 +194,11 @@ export default function UpdateBook() {
                                     name="price"
                                     autoComplete="price"
                                     type="number"
+                                    step="0.01"
                                     value={book.price}
                                     onChange={handleInputChange}
                                 />
+
                                 <FormControl fullWidth margin="normal">
                                     <InputLabel id="genre-label">Select genre</InputLabel>
                                     <Select
@@ -233,7 +210,7 @@ export default function UpdateBook() {
                                         label="Select genre"
                                     >
                                         <MenuItem value="">Select a genre</MenuItem>
-                                        {genres.map((genre) => (
+                                        {GENRES.map((genre) => (
                                             <MenuItem key={genre} value={genre}>
                                                 {genre}
                                             </MenuItem>
@@ -311,14 +288,14 @@ export default function UpdateBook() {
                         </Box>
                     </Container>
                 </ThemeProvider>
-                </Box>
-                <Backdrop
-                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                    open={loading}
-                >
-                    <CircularProgress color="success" />
-                </Backdrop>
-            </>
-            );
+            </Box>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={loading}
+            >
+                <CircularProgress color="success" />
+            </Backdrop>
+        </>
+    );
 };
 

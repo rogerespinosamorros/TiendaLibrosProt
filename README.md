@@ -86,7 +86,7 @@ npm start
 
 🙌 Autor
 Roger Espinosa
-📧 roger.espinosa@gmail.com
+📧 rogerespinosamorros@gmail.com
 💼 www.linkedin.com/in/rogerespinosamorros
 
 

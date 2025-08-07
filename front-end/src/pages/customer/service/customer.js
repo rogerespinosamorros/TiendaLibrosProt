@@ -1,5 +1,35 @@
 import instance from "../../../environment/axiosInstance";
 
+export const getCustomerProfile = async () => {
+    try {
+        const response = await instance.get('/api/customer/profile'); // ✅ CORREGIDO
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const updateCustomerProfile = async (data) => {
+    try {
+        const response = await instance.put('/api/customer/profile', data); // ✅ CORREGIDO
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const deleteCustomerAccount = async () => {
+    try {
+        const response = await instance.delete('/api/customer/profile'); // ✅ CORREGIDO
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+
+
+
 export const getBooks = async () => {
     try {
         const response = await instance.get(`/api/customer/book`);

@@ -3,7 +3,6 @@ const Book = require('../../models/Book');
 const User = require('../../models/User');
 const CartItem = require('../../models/CartItem');
 
-
 const addBookToCart = async (userId, bookId) => {
     try {
         let activeOrder = await Order.findOne({ user: userId, orderStatus: 'Pending' }).populate({
@@ -11,7 +10,6 @@ const addBookToCart = async (userId, bookId) => {
             populate: { path: 'book' }
         });
 
-        // If no active order, create one
         if (!activeOrder) {
             activeOrder = await new Order({
                 user: userId,
@@ -20,23 +18,14 @@ const addBookToCart = async (userId, bookId) => {
                 amount: 0,
                 address: ''
             }).save();
-            // Populate cartItem for consistency
+
             activeOrder = await Order.findById(activeOrder._id).populate({
                 path: 'cartItem',
                 populate: { path: 'book' }
             });
         }
 
-        // Check if the book is already in the cart
-        if (
-            activeOrder.cartItem.some(
-                item => item.book && item.book._id.toString() === bookId
-            )
-        ) {
-            return { status: 409, data: 'This book is already in the cart.' };
-        }
-
-        // Find book and user
+        // ⚠️ Cargar primero el libro y el usuario
         const [book, user] = await Promise.all([
             Book.findById(bookId),
             User.findById(userId)
@@ -44,50 +33,66 @@ const addBookToCart = async (userId, bookId) => {
 
         if (!book || !user) return { status: 404, data: 'Book or user not found' };
 
-        // Create and save new cart item
-        const savedCartItem = await new CartItem({
+        let existingCartItem = await CartItem.findOne({
             order: activeOrder._id,
-            user: user._id,
-            book: book._id,
-            price: book.price,
-            quantity: 1
-        }).save();
+            user: userId,
+            book: bookId
+        });
 
-        // Update order
-        activeOrder.amount += book.price;
-        activeOrder.cartItem.push(savedCartItem._id);
+        if (existingCartItem) {
+            existingCartItem.quantity += 1;
+            existingCartItem.price += book.price;
+            await existingCartItem.save();
+        } else {
+            existingCartItem = await new CartItem({
+                order: activeOrder._id,
+                user: user._id,
+                book: book._id,
+                price: book.price,
+                quantity: 1
+            }).save();
+
+            activeOrder.cartItem.push(existingCartItem._id);
+        }
+
+        const cartItems = await CartItem.find({ _id: { $in: activeOrder.cartItem } });
+        activeOrder.amount = cartItems.reduce((sum, item) => sum + item.price, 0);
         await activeOrder.save();
 
         return { status: 201, data: 'Book added to cart successfully' };
-        } catch (error) {
-            console.error('Error adding book to cart:', error);
-            return { status: 500, data: 'Internal server error' };
-        }
+
+    } catch (error) {
+        console.error('Error adding book to cart:', error);
+        return { status: 500, data: 'Internal server error' };
     }
+};
 
 const fetchCartByUser = async (userId) => {
-    const activeOrder = await Order.findOne({ user: userId, orderStatus: 'Pending' })
-        .populate({
-            path: 'cartItem',
-            populate: { path: 'book' }
-        });
-    if (!activeOrder) return { status: 404, data: 'Active order not found' };
+    try {
+        const activeOrder = await Order.findOne({ user: userId, orderStatus: 'Pending' })
+            .populate({
+                path: 'cartItem',
+                populate: { path: 'book' }
+            });
+        if (!activeOrder) return { status: 404, data: 'Active order not found' };
 
-    return { status: 200, data: activeOrder };
-
+        return { status: 200, data: activeOrder };
+    } catch (error) {
+        console.error('Error fetching cart:', error);
+        return { status: 500, data: 'Internal server error' };
+    }
 };
 
 const removeBookFromCart = async (userId, cartItemId) => {
     try {
-        const activeOrder = await Order.findOne ({ user: userId, orderStatus: 'Pending'});
+        const activeOrder = await Order.findOne({ user: userId, orderStatus: 'Pending' });
         if (!activeOrder) return { status: 404, data: 'No active order found' };
-        // console.log('cartItemId:', cartItemId, typeof cartItemId);
-        // console.log('activeOrder.cartItem:', activeOrder.cartItem);
+
         activeOrder.cartItem = activeOrder.cartItem.filter(
             itemId => itemId.toString() !== cartItemId.toString()
         );
 
-        const cartItems = await CartItem.find({ _id: { $in: activeOrder.cartItem } })
+        const cartItems = await CartItem.find({ _id: { $in: activeOrder.cartItem } });
         activeOrder.amount = cartItems.reduce((sum, item) => sum + item.price, 0);
         await activeOrder.save();
 
@@ -96,11 +101,47 @@ const removeBookFromCart = async (userId, cartItemId) => {
 
     } catch (error) {
         console.error('Error deleting book from cart:', error);
-        return { status: 500, data: 'Internal server error' }
+        return { status: 500, data: 'Internal server error' };
     }
 };
 
+const updateCartItemQuantity = async (userId, cartItemId, action) => {
+    try {
+        const cartItem = await CartItem.findById(cartItemId).populate('book');
+        if (!cartItem) return { status: 404, data: 'Cart item not found' };
+
+        // Validar propiedad del carrito
+        const order = await Order.findById(cartItem.order);
+        if (!order || order.user.toString() !== userId) {
+            return { status: 403, data: 'Not authorized to modify this cart item' };
+        }
+
+        if (action === 'increase') {
+            cartItem.quantity += 1;
+            cartItem.price += cartItem.book.price;
+        } else if (action === 'decrease' && cartItem.quantity > 1) {
+            cartItem.quantity -= 1;
+            cartItem.price -= cartItem.book.price;
+        }
+
+        await cartItem.save();
+
+        // Recalcular total del pedido
+        const allItems = await CartItem.find({ _id: { $in: order.cartItem } });
+        order.amount = allItems.reduce((sum, item) => sum + item.price, 0);
+        await order.save();
+
+        return { status: 200, data: 'Quantity updated' };
+
+    } catch (error) {
+        console.error('Error updating cart quantity:', error);
+        return { status: 500, data: 'Internal server error' };
+    }
+};
 
 module.exports = {
-    addBookToCart, fetchCartByUser, removeBookFromCart
+    addBookToCart,
+    fetchCartByUser,
+    removeBookFromCart,
+    updateCartItemQuantity
 };

@@ -4,6 +4,9 @@ import { Backdrop, Box, CircularProgress, Grid, Typography, Paper, Button, Dialo
 import { styled } from '@mui/material/styles';
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
+import ROUTES from '../../../../utils/constants/routes';
+import axiosInstance from "../../../../environment/axiosInstance";
+
 
 
 const Img = styled('img')({
@@ -73,7 +76,7 @@ export default function Cart() {
         try {
             const response = await placeOrder(formData);
             if (response.status === 200) {
-                navigate(`/customer/dashboard`);
+                navigate(ROUTES.CUSTOMER.DASHBOARD);
                 enqueueSnackbar("Order placed successfully!", { variant: "success", autoHideDuration: 6000 });
                 setOpen(false);
             }
@@ -94,139 +97,186 @@ export default function Cart() {
             }
         } catch (error) {
             console.log(error)
-            enqueueSnackbar("Error deleting cart item", { variant: "error"});
+            enqueueSnackbar("Error deleting cart item", { variant: "error" });
         } finally {
             setLoading(false);
         }
     }
 
+    const handleUpdateQuantity = async (cartItemId, action) => {
+        setLoading(true);
+        try {
+            const res = await axiosInstance.put(`/api/customer/cart/updateQuantity/${cartItemId}`, { action });
+
+            if (res.status === 200) {
+                enqueueSnackbar(res.data.message, { variant: 'success' });
+                fetchCartByUser(); // Refresca el carrito
+            } else {
+                enqueueSnackbar(res.data.error || 'Error updating quantity', { variant: 'error' });
+            }
+        } catch (error) {
+            console.error(error);
+            enqueueSnackbar('Error updating quantity', { variant: 'error' });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
+
+
 
 
     return (
         <>
-        <Box
-          sx={{
-            minHeight: "100vh",
-            width: "100vw",
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: 0,
-            background: "linear-gradient(120deg, #f6d365 0%, #fda085 100%)", 
-          }}
-        >
-          
-            {cartItems.length > 0 ? (
-                <>
-                
-          
-                    <Box sx={{ flexGrow: 1, p: 5 }}>
-                        <Grid container spacing={1}>
-                            <Grid container item spacing={3}>
-                                {cartItems.map(item => (
-                                    <Grid item xs={4}>
-                                        <Item key={item.book._id}>
-                                            <Img src={item.book.imageUrl} alt="product-image" style={{ width: 70, height: 70 }} />
-                                            <Typography variant="h6" className={`item-name ${item.highlighted ? 'highlight' : ''}`}>
-                                                Name: {item.book.title}
-                                            </Typography>
-                                            <Typography variant="body1" className="item-price">
-                                                Price: ${item.book.price}
-                                            </Typography>
-                                            <Button
-                                                variant="outlined"
-                                                color="error"
-                                                sx={{ mt:1 }}
-                                                onClick={() => handleDeleteCartItem(item._id)}
-                                            >
-                                                Delete
-                                            </Button>
-                                        </Item>
-                                    </Grid>
-                                ))}
-                            </Grid>
-                        </Grid>
-                    </Box>
-                    <Box sx={{ flexGrow: 1, p: 5, display: 'flex', justifyContent: 'flex-end' }}>
-                        <Grid container spacing={1} direction="column" alignItems="flex-end">
-                            <Grid item>
-                                <Typography>Total Amount: ${order.amount}</Typography>
-                            </Grid>
-                            <Grid item>
-                                <Button variant="contained" color="primary" onClick={() => setOpen(true)} sx={{ mt: 2 }}>
-                                    Place Order
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    </Box>
-                    
-                </>
-            ) : (
-                <Box
-                    sx={{
-                        flexGrow: 1,
-                        p: 5,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}
-                >
-                    <Typography variant="h4">Nothing to see here. Cart is empty</Typography>
-                </Box>
-            )}
-
-            <Dialog
-                open={open}
-                onClose={() => setOpen(false)}
-                PaperProps={{
-                    component: 'form',
-                    onSubmit: handleSubmit
+            <Box
+                sx={{
+                    minHeight: "100vh",
+                    width: "100vw",
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginTop: 0,
+                    background: "linear-gradient(120deg, #f6d365 0%, #fda085 100%)",
                 }}
             >
-                <DialogTitle>Place Order</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Place your order by adding any special instruction in description and adress.
-                    </DialogContentText>
-                    <TextField
-                        autoFocus
-                        required
-                        margin="dense"
-                        id="address"
-                        name="address"
-                        label="Address"
-                        type="text"
-                        multiline
-                        maxRows={4}
-                        fullWidth
-                        variant="standard"
-                        value={formData.address}
-                        onChange={handleInputChange}
-                    />
-                    <TextField
-                        autoFocus
-                        required
-                        margin="dense"
-                        id="orderDescription"
-                        name="orderDescription"
-                        label="Description or Instruction"
-                        type="text"
-                        multiline
-                        maxRows={4}
-                        fullWidth
-                        variant="standard"
-                        value={formData.orderDescription}
-                        onChange={handleInputChange}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => setOpen(false)}>Cancel</Button>
-                    <Button type="submit">Place Order</Button>
-                </DialogActions>
-            </Dialog>
+
+                {cartItems.length > 0 ? (
+                    <>
+
+
+                        <Box sx={{ flexGrow: 1, p: 5 }}>
+                            <Grid container spacing={1}>
+                                <Grid container item spacing={3}>
+                                    {cartItems.map(item => (
+                                        <Grid item xs={4}>
+                                            <Item key={item.book._id}>
+                                                <Img src={item.book.imageUrl} alt="product-image" style={{ width: 70, height: 70 }} />
+                                                <Typography variant="h6" className={`item-name ${item.highlighted ? 'highlight' : ''}`}>
+                                                    Name: {item.book.title}
+                                                </Typography>
+                                                <Typography variant="body1">
+                                                    Price (unit): ${item.book.price.toFixed(2)}
+                                                </Typography>
+                                                <Typography variant="body1">
+                                                    Quantity: {item.quantity}
+                                                </Typography>
+                                                <Typography variant="body1">
+                                                    Total: ${item.price.toFixed(2)}
+                                                </Typography>
+
+                                                <Box sx={{ mt: 1, display: 'flex', gap: 1, justifyContent: 'center' }}>
+                                                    <Button
+                                                        size="small"
+                                                        variant="outlined"
+                                                        onClick={() => handleUpdateQuantity(item._id, 'decrease')}
+                                                        disabled={item.quantity <= 1}
+                                                    >
+                                                        -
+                                                    </Button>
+                                                    <Button
+                                                        size="small"
+                                                        variant="outlined"
+                                                        onClick={() => handleUpdateQuantity(item._id, 'increase')}
+                                                    >
+                                                        +
+                                                    </Button>
+                                                    <Button
+                                                        size="small"
+                                                        variant="outlined"
+                                                        color="error"
+                                                        onClick={() => handleDeleteCartItem(item._id)}
+                                                    >
+                                                        Delete
+                                                    </Button>
+                                                </Box>
+
+                                            </Item>
+                                        </Grid>
+                                    ))}
+                                </Grid>
+                            </Grid>
+                        </Box>
+                        <Box sx={{ flexGrow: 1, p: 5, display: 'flex', justifyContent: 'flex-end' }}>
+                            <Grid container spacing={1} direction="column" alignItems="flex-end">
+                                <Grid item>
+                                    <Typography>Total Amount: ${order.amount.toFixed(2)}</Typography>
+                                </Grid>
+                                <Grid item>
+                                    <Button variant="contained" color="primary" onClick={() => setOpen(true)} sx={{ mt: 2 }}>
+                                        Place Order
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </Box>
+
+                    </>
+                ) : (
+                    <Box
+                        sx={{
+                            flexGrow: 1,
+                            p: 5,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <Typography variant="h4">Nothing to see here. Cart is empty</Typography>
+                    </Box>
+                )}
+
+                <Dialog
+                    open={open}
+                    onClose={() => setOpen(false)}
+                    PaperProps={{
+                        component: 'form',
+                        onSubmit: handleSubmit
+                    }}
+                >
+                    <DialogTitle>Place Order</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Place your order by adding any special instruction in description and adress.
+                        </DialogContentText>
+                        <TextField
+                            autoFocus
+                            required
+                            margin="dense"
+                            id="address"
+                            name="address"
+                            label="Address"
+                            type="text"
+                            multiline
+                            maxRows={4}
+                            fullWidth
+                            variant="standard"
+                            value={formData.address}
+                            onChange={handleInputChange}
+                        />
+                        <TextField
+                            autoFocus
+                            required
+                            margin="dense"
+                            id="orderDescription"
+                            name="orderDescription"
+                            label="Description or Instruction"
+                            type="text"
+                            multiline
+                            maxRows={4}
+                            fullWidth
+                            variant="standard"
+                            value={formData.orderDescription}
+                            onChange={handleInputChange}
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => setOpen(false)}>Cancel</Button>
+                        <Button type="submit">Place Order</Button>
+                    </DialogActions>
+                </Dialog>
             </Box>
-            
+
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={loading}

@@ -8,26 +8,80 @@ La aplicación permite explorar y gestionar libros disponibles para la venta de 
 
 ## 🚀 Tecnologías Utilizadas
 
-- **Frontend:** React
-- **Backend:** Node.js + Mongoose
-- **Base de datos:** MongoDB
+- **Frontend:** React (con Material UI)
+- **Backend:** Node.js, Express
+- **Base de datos:** MongoDB (con Mongoose)
+- **Autenticación:** JWT (Token-Based)
+- **Control de estado:** React Hooks
+- **Estilos:** Material UI + estilos personalizados
 
 ---
 
 ## ✨ Características Principales
 
 - 📖 Visualización de libros disponibles
-- 👤 Registro y autenticación de usuarios
-- ✏️ Agregar, editar y eliminar libros (solo para usuarios autorizados)
-- 🛒 Compra simulada de libros
-- 🛠️ Panel de administración básico
+- 🔐 Registro, login y autenticación de usuarios (rol admin o cliente)
+- 🛒 Añadir libros al carrito y simular pedidos
+- 👩‍💻 Panel de administración para gestionar libros y pedidos
+- 💬 Feedback visual mediante notificaciones (`notistack`)
+- 🧾 Gestión de órdenes con dirección e instrucciones personalizadas
+
+---
+
+## 🗂️ Estructura del Proyecto
+
+```bash
+TiendaLibrosProt/
+│
+├── backend/
+│   ├── controllers/
+│   ├── middlewares/
+│   ├── models/
+│   ├── routes/
+│   ├── services/
+│   ├── utils/
+│   ├── app.js
+│   └── .env
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   ├── utils/
+│   │   └── App.js
+│   ├── public/
+│   └── package.json
+│
+└── README.md
+
+
 
 ---
 
 ## 🛠️ Instalación y Ejecución Local
 
-1. **Clona el repositorio:**
+### 1. Clona el repositorio
 
-   ```bash
-   git clone https://github.com/rogerespinosamorros/TiendaLibrosProt.git
-   cd TiendaLibrosProt
+```bash
+git clone https://github.com/rogerespinosamorros/TiendaLibrosProt.git
+cd TiendaLibrosProt
+
+### Backend
+
+cd backend
+npm install
+
+
+#### Server
+
+npm start
+
+### Frontend
+
+cd frontend
+npm install
+npm start
+
+
+

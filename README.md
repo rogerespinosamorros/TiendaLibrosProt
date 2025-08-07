@@ -82,6 +82,13 @@ npm start
 cd frontend
 npm install
 npm start
+```
+
+🙌 Autor
+Roger Espinosa
+📧 roger.espinosa@gmail.com
+💼 www.linkedin.com/in/rogerespinosamorros
+
 
 
 
